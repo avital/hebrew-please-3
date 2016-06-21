@@ -13,7 +13,7 @@ def main():
     for label in [0, 1]:
         for url in VIDEOS[label]:
             video_id = url[-11:]
-            processed_base_dir = os.path.abspath('data/{0}'.format(video_id))
+            processed_base_dir = os.path.abspath('data/{0}/{1}'.format(label, video_id))
             make_sure_path_exists(processed_base_dir)
             downloaded_audio_file = '{0}/audio.unknown'.format(processed_base_dir)
             converted_audio_file = '{0}/audio.wav'.format(processed_base_dir)
