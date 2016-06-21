@@ -8,8 +8,6 @@ from videos import VIDEOS
 SAMPLE_FREQ = 11025
 
 def main():
-    check_ffmpeg_installed()
-
     for label in [0, 1]:
         for url in VIDEOS[label]:
             video_id = url[-11:]
@@ -19,11 +17,6 @@ def main():
             converted_audio_file = '{0}/audio.wav'.format(processed_base_dir)
             download_audio_from_youtube(url, downloaded_audio_file)
             convert_audio_to_wav(downloaded_audio_file, converted_audio_file)
-
-def check_ffmpeg_installed():
-    if not os.path.isfile('./ffmpeg'):
-        print('Error: `ffmpeg` needs to be installed in {0}'.format(os.getcwd()))
-        exit(1)
 
 def download_audio_from_youtube(url, downloaded_audio_file):
     print()
@@ -40,7 +33,7 @@ def download_audio_from_youtube(url, downloaded_audio_file):
 def convert_audio_to_wav(downloaded_audio_file, converted_audio_file):
     print()
     print('Converting to WAV ({0})...'.format(converted_audio_file))
-    subprocess.check_call(["./ffmpeg", "-y", "-i", downloaded_audio_file, "-ar", \
+    subprocess.check_call(["ffmpeg", "-y", "-i", downloaded_audio_file, "-ar", \
                            str(SAMPLE_FREQ), "-ac", "1", "-acodec", "pcm_s16le", converted_audio_file])
     print('DONE.')
 
