@@ -49,15 +49,20 @@ def make_validation_examples():
         example_dir = 'data/{0}-val/{1}'.format(label, i)
         make_sure_path_exists(example_dir)
 
+        label_videos_dir = '{0}/{1}'.format(VIDEOS_DATA_DIR, label)
+        videos = os.listdir(label_videos_dir)
+        video = random.choice(videos)
+        wav_file = '{0}/{1}/audio.wav'.format(label_videos_dir, video)
+
         random_semgent_file = '{0}/segment.wav'.format(example_dir)
         cut_random_segment(wav_file, random_segment_file)
 
-        normalized_semgent_file = '{0}/normalized.wav'.format(example_dir)
-        add_random_noise(random_segment_file, normalized_semgent_file)
+        normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
+        add_random_noise(random_segment_file, normalized_segment_file)
 
         spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
         spectrogram_image_file = '{0}/spectrogram.png'.format(example_dir)
-        make_spectrogram(normalized_semgent_file, spectrogram_numpy_file, spectrogram_image_file)
+        make_spectrogram(normalized_segment_file, spectrogram_numpy_file, spectrogram_image_file)
 
 def cut_random_segment(in_wav_file, out_wav_file):
     # XXX!!! brittle if we change file format
