@@ -23,8 +23,8 @@ def make_training_examples():
         video = random.choice(videos)
         wav_file = '{0}/{1}/audio.wav'.format(VIDEOS_DATA_DIR, video)
 
-        random_semgent_file = '{0}/segment.wav'.format(example_dir)
-        cut_random_sample(wav_file, random_segment_file)
+        random_segment_file = '{0}/segment.wav'.format(example_dir)
+        cut_random_segment(wav_file, random_segment_file)
 
         stretched_semgent_file = '{0}/stretched.wav'.format(example_dir)
         stretch(random_segment_file, stretched_segment_file)
@@ -47,7 +47,7 @@ def make_validation_examples():
         make_sure_path_exists(example_dir)
 
         random_semgent_file = '{0}/segment.wav'.format(example_dir)
-        cut_random_sample(wav_file, random_segment_file)
+        cut_random_segment(wav_file, random_segment_file)
 
         normalized_semgent_file = '{0}/normalized.wav'.format(example_dir)
         add_random_noise(random_segment_file, normalized_semgent_file)
@@ -56,7 +56,7 @@ def make_validation_examples():
         spectrogram_image_file = '{0}/spectrogram.png'.format(example_dir)
         make_spectrogram(normalized_semgent_file, spectrogram_numpy_file, spectrogram_image_file)
 
-def cut_random_sample(in_wav_file, out_wav_file):
+def cut_random_segment(in_wav_file, out_wav_file):
     # XXX!!! brittle if we change file format
     num_secs = os.path.getsize(in_wav_file) / 11025 / 2
     start_sec = random.uniform(0, num_secs - 2)
