@@ -34,11 +34,11 @@ def make_training_examples():
         add_random_noise(stretched_segment_file, noisy_segment_file)
 
         normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
-        normalize(noisy_segment_file, normalized_semgent_file)
+        normalize(noisy_segment_file, normalized_segment_file)
 
         spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
         spectrogram_png_file = '{0}/spectrogram.png'.format(example_dir)
-        make_spectrogram(normalized_semgent_file, spectrogram_numpy_file, spectrogram_image_file)
+        make_spectrogram(normalized_segment_file, spectrogram_numpy_file, spectrogram_image_file)
 
 
 def make_validation_examples():
