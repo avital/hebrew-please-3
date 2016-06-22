@@ -27,13 +27,13 @@ def make_training_examples():
         random_segment_file = '{0}/segment.wav'.format(example_dir)
         cut_random_segment(wav_file, random_segment_file)
 
-        stretched_semgent_file = '{0}/stretched.wav'.format(example_dir)
+        stretched_segment_file = '{0}/stretched.wav'.format(example_dir)
         stretch(random_segment_file, stretched_segment_file)
 
-        noisy_semgent_file = '{0}/noisy.wav'.format(example_dir)
+        noisy_segment_file = '{0}/noisy.wav'.format(example_dir)
         add_random_noise(stretched_segment_file, noisy_segment_file)
 
-        normalized_semgent_file = '{0}/normalized.wav'.format(example_dir)
+        normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
         normalize(noisy_segment_file, normalized_semgent_file)
 
         spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
