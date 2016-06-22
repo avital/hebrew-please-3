@@ -54,7 +54,7 @@ def make_validation_examples():
         video = random.choice(videos)
         wav_file = '{0}/{1}/audio.wav'.format(label_videos_dir, video)
 
-        random_semgent_file = '{0}/segment.wav'.format(example_dir)
+        random_segment_file = '{0}/segment.wav'.format(example_dir)
         cut_random_segment(wav_file, random_segment_file)
 
         normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
