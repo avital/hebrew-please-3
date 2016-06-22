@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-import errno
 import os
 import subprocess
 import youtube_dl

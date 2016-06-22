@@ -1,4 +1,5 @@
 import os
+import errno
 
 def make_sure_path_exists(path):
     try:
