@@ -60,14 +60,15 @@ def make_validation_examples():
 def cut_random_segment(in_wav_file, out_wav_file):
     # XXX!!! brittle if we change file format
     num_secs = os.path.getsize(in_wav_file) / 11025 / 2
-    start_sec = random.uniform(0, num_secs - 2)
+    segment_secs = 2
+    start_sec = random.uniform(0, num_secs - segment_secs)
     subprocess.check_call([
         'sox',
         in_wav_file,
         out_wav_file,
         'trim',
         str(start_sec),
-        str(start_sec + 2)
+        str(segment_secs),
     ])
 
 def stretch(in_wav_file, out_wav_file):
