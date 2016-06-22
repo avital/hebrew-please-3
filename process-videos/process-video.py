@@ -1,8 +1,13 @@
 import os
 import random
+import subprocess
+
+from utils import make_sure_path_exists
 
 NUM_TRAINING_EXAMPLES=30000
 NUM_VALIDATION_EXAMPLES=6000
+
+VIDEOS_DATA_DIR='../download-videos/data/'
 
 def main():
     make_training_examples()
@@ -11,15 +16,64 @@ def main():
 def make_training_examples():
     for i in xrange(NUM_TRAINING_EXAMPLES):
         label = random.choice([0, 1])
-        videos = os.listdir('../download-videos/data/{0}'.format(label))
+        example_dir = 'data/{0}/{1}'.format(label, i)
+        make_sure_path_exists(example_dir)
+
+        videos = os.listdir('{0}/{1}'.format(VIDEOS_DATA_DIR, label))
         video = random.choice(videos)
-        print video
+        wav_file = '{0}/{1}/audio.wav'.format(VIDEOS_DATA_DIR, video)
+
+        random_semgent_file = '{0}/segment.wav'.format(example_dir)
+        cut_random_segment(wav_file, random_segment_file)
+
+        stretched_semgent_file = '{0}/stretched.wav'.format(example_dir)
+        stretch(random_segment_file, stretched_segment_file)
+
+        noisy_semgent_file = '{0}/noisy.wav'.format(example_dir)
+        add_random_noise(stretched_segment_file, noisy_segment_file)
+
+        normalized_semgent_file = '{0}/normalized.wav'.format(example_dir)
+        normalize(noisy_segment_file, normalized_semgent_file)
+
+        spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
+        spectrogram_png_file = '{0}/spectrogram.png'.format(example_dir)
+        make_spectrogram(normalized_semgent_file, spectrogram_numpy_file, spectrogram_image_file)
+
 
 def make_validation_examples():
     for i in xrange(NUM_VALIDATION_EXAMPLES):
         label = random.choice([0, 1])
-        videos = os.listdir('../download-videos/data/{0}'.format(label))
-        video = random.choice(videos)
+        example_dir = 'data/{0}-val/{1}'.format(label, i)
+        make_sure_path_exists(example_dir)
+
+        random_semgent_file = '{0}/segment.wav'.format(example_dir)
+        cut_random_segment(wav_file, random_segment_file)
+
+        normalized_semgent_file = '{0}/normalized.wav'.format(example_dir)
+        add_random_noise(random_segment_file, normalized_semgent_file)
+
+        spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
+        spectrogram_image_file = '{0}/spectrogram.png'.format(example_dir)
+        make_spectrogram(normalized_semgent_file, spectrogram_numpy_file, spectrogram_image_file)
+
+def cut_random_sample(in_wav_file, out_wav_file):
+    # XXX!!! brittle if we change file format
+    num_secs = os.path.getsize(in_wav_file) / 11025 / 2
+    start_sec = random.uniform(0, num_secs - 2)
+    subprocess.check_call(['sox', in_wav_file, out_wav_file, 'trim', start_sec, start_sec + 2])
+
+def stretch(in_wav_file, out_wav_file):
+    pass
+
+def add_random_noise(in_wav_file, out_wav_file):
+    pass
+
+def normalize(in_wav_file, out_wav_file):
+    pass
+
+def make_spectrogram(in_wav_file, out_numpy_file, out_png_file):
+    pass
+
 
 if __name__ == '__main__':
     main()

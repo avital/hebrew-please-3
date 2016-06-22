@@ -6,6 +6,7 @@ import subprocess
 import youtube_dl
 
 from videos import VIDEOS
+from utils import make_sure_path_exists
 
 SAMPLE_FREQ = 11025
 
@@ -38,13 +39,6 @@ def convert_audio_to_wav(downloaded_audio_file, converted_audio_file):
     subprocess.check_call(["ffmpeg", "-y", "-i", downloaded_audio_file, "-ar", \
                            str(SAMPLE_FREQ), "-ac", "1", "-acodec", "pcm_s16le", converted_audio_file])
     print('DONE.')
-
-def make_sure_path_exists(path):
-    try:
-        os.makedirs(path)
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
