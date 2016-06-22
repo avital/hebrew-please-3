@@ -15,6 +15,7 @@ def main():
 
 def make_training_examples():
     for i in xrange(NUM_TRAINING_EXAMPLES):
+        print "Training: {0}/{1}".format(i+1, NUM_TRAINING_EXAMPLES)
         label = random.choice([0, 1])
         example_dir = 'data/{0}/{1}'.format(label, i)
         make_sure_path_exists(example_dir)
@@ -43,6 +44,7 @@ def make_training_examples():
 
 def make_validation_examples():
     for i in xrange(NUM_VALIDATION_EXAMPLES):
+        print "Validation: {0}/{1}".format(i+1, NUM_VALIDATION_EXAMPLES)
         label = random.choice([0, 1])
         example_dir = 'data/{0}-val/{1}'.format(label, i)
         make_sure_path_exists(example_dir)
