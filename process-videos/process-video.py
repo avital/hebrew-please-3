@@ -31,8 +31,9 @@ def make_training_examples():
         stretched_segment_file = '{0}/stretched.wav'.format(example_dir)
         stretch(random_segment_file, stretched_segment_file)
 
+        noise_file = '{0}/noise.wav'.format(example_dir)
         noisy_segment_file = '{0}/noisy.wav'.format(example_dir)
-        add_random_noise(stretched_segment_file, noisy_segment_file)
+        add_random_noise(stretched_segment_file, noise_file, noisy_segment_file)
 
         normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
         normalize(noisy_segment_file, normalized_segment_file)
@@ -79,17 +80,53 @@ def cut_random_segment(in_wav_file, out_wav_file):
     ])
 
 def stretch(in_wav_file, out_wav_file):
-    pass
+    factor = math.exp(random.uniform(math.log(0.9), math.log(1.1)))
+    subprocess.check_call([
+        'sox',
+        in_wav_file,
+        out_wav_file,
+        'tempo',
+        '-s',
+        str(factor),
+        'trim',
+        '0',
+        '1.6',
+    ])
 
-def add_random_noise(in_wav_file, out_wav_file):
-    pass
+def add_random_noise(in_wav_file, noise_wav_file, out_wav_file):
+    subprocess.check_call([
+        'sox',
+        in_wav_file,
+        '-p',
+        'synth',
+        'whitenoise',
+        'vol',
+        '0.02',
+        noise_wav_file,
+    ])
+    subprocess.check_call([
+        'sox',
+        '-m',
+        in_wav_file,
+        noise_wav_file,
+        out_wav_file,
+    ])
 
 def normalize(in_wav_file, out_wav_file):
-    pass
+    subprocess.check_call([
+        'sox',
+        '-norm',
+        in_wav_file,
+        out_wav_file,
+    ])
 
 def make_spectrogram(in_wav_file, out_numpy_file, out_png_file):
-    pass
-
+    subprocess.check_call([
+        'sox',
+        in_wav_file,
+        '-n',
+        out_png_file,
+    ])
 
 if __name__ == '__main__':
     main()
