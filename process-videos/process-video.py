@@ -38,7 +38,7 @@ def make_training_examples():
 
         spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
         spectrogram_png_file = '{0}/spectrogram.png'.format(example_dir)
-        make_spectrogram(normalized_segment_file, spectrogram_numpy_file, spectrogram_image_file)
+        make_spectrogram(normalized_segment_file, spectrogram_numpy_file, spectrogram_png_file)
 
 
 def make_validation_examples():
