@@ -125,6 +125,8 @@ def make_spectrogram(in_wav_file, out_numpy_file, out_png_file):
         'sox',
         in_wav_file,
         '-n',
+        'spectrogram',
+        '-o',
         out_png_file,
     ])
 
