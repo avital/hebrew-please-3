@@ -39,7 +39,7 @@ def make_training_examples():
         normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
         normalize(noisy_segment_file, normalized_segment_file)
 
-        spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
+        spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir) # unused
         spectrogram_png_file = '{0}/spectrogram.png'.format(example_dir)
         make_spectrogram(normalized_segment_file, spectrogram_numpy_file, spectrogram_png_file)
 
@@ -60,7 +60,7 @@ def make_validation_examples():
         cut_random_segment(wav_file, random_segment_file)
 
         normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
-        add_random_noise(random_segment_file, normalized_segment_file)
+        normalize(random_segment_file, normalized_segment_file)
 
         spectrogram_numpy_file = '{0}/spectrogram.npy'.format(example_dir)
         spectrogram_image_file = '{0}/spectrogram.png'.format(example_dir)
@@ -126,8 +126,8 @@ def make_spectrogram(in_wav_file, out_numpy_file, out_png_file):
         in_wav_file,
         '-n',
         'spectrogram',
-        '-y', '257', # 65 FFT bins
-        '-x', '257', # width
+        '-y', '257', # 257 FFT bins
+        '-x', '320', # width
         '-r', # raw spectrogram
         '-o',
         out_png_file,
