@@ -115,7 +115,7 @@ def add_random_noise(in_wav_file, noise_wav_file, out_wav_file):
 def normalize(in_wav_file, out_wav_file):
     subprocess.check_call([
         'sox',
-        '-norm',
+        '--norm',
         in_wav_file,
         out_wav_file,
     ])
