@@ -98,12 +98,11 @@ def add_random_noise(in_wav_file, noise_wav_file, out_wav_file):
     subprocess.check_call([
         'sox',
         in_wav_file,
-        '-p',
+        noise_wav_file,
         'synth',
         'whitenoise',
         'vol',
         '0.02',
-        noise_wav_file,
     ])
     subprocess.check_call([
         'sox',
