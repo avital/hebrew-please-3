@@ -126,6 +126,7 @@ def make_spectrogram(in_wav_file, out_numpy_file, out_png_file):
         in_wav_file,
         '-n',
         'spectrogram',
+        '-r', # raw spectrogram
         '-o',
         out_png_file,
     ])
