@@ -126,6 +126,8 @@ def make_spectrogram(in_wav_file, out_numpy_file, out_png_file):
         in_wav_file,
         '-n',
         'spectrogram',
+        '-y', '257', # 65 FFT bins
+        '-x', '257', # width
         '-r', # raw spectrogram
         '-o',
         out_png_file,
