@@ -1,5 +1,3 @@
-# train7.py
-
 from keras.models import Sequential
 from keras.optimizers import Adadelta
 from keras.layers.core import Dense, Activation, Flatten, Dropout
@@ -20,7 +18,7 @@ model = Sequential()
 
 L2_REGULARIZATION = 0.000
 INITIAL_DROPOUT = 0.2
-DROPOUT = 0.5
+DROPOUT = 0
 
 model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
 model.add(Dropout(INITIAL_DROPOUT))
