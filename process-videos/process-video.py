@@ -5,8 +5,8 @@ import math
 
 from utils import make_sure_path_exists
 
-NUM_TRAINING_EXAMPLES=300
-NUM_VALIDATION_EXAMPLES=60
+NUM_TRAINING_EXAMPLES=6000
+NUM_VALIDATION_EXAMPLES=1000
 
 VIDEOS_DATA_DIR='../download-videos/data/'
 
