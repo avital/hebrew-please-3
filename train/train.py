@@ -18,36 +18,38 @@ import os
 
 model = Sequential()
 
-L2_REGULARIZATION = 0.002
+L2_REGULARIZATION = 0.000
+INITIAL_DROPOUT = 0.2
+DROPOUT = 0.5
 
 model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
-model.add(Dropout(0.2))
+model.add(Dropout(INITIAL_DROPOUT))
 
 model.add(Convolution2D(4, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Dropout(0.5))
+model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(Convolution2D(4, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Dropout(0.5))
+model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(4, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Dropout(0.5))
+model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(4, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Dropout(0.5))
+model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(4, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Dropout(0.5))
+model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
@@ -55,7 +57,7 @@ model.add(BatchNormalization())
 model.add(Flatten())
 
 model.add(Dense(8))
-model.add(Dropout(0.5))
+model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
@@ -104,10 +106,10 @@ model.fit(
     data,
     labels,
     nb_epoch=10000,
-    batch_size=32,
+    batch_size=128,
     validation_data=(val_data, val_labels),
     callbacks=[
-#        ModelCheckpoint(filepath="/mnt/weights.{epoch:02d}-{val_acc:.2f}.hdf5"),
+        ModelCheckpoint(filepath="/mnt/weights.{epoch:02d}-{val_acc:.2f}.hdf5"),
         EarlyStopping(patience=5000)
     ]
 )
