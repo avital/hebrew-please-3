@@ -23,38 +23,37 @@ DROPOUT = 0
 model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
 model.add(Dropout(INITIAL_DROPOUT))
 
-model.add(Convolution2D(4, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
+model.add(Convolution2D(8, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
 model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
-model.add(Convolution2D(4, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Dropout(DROPOUT))
-model.add(ELU())
-model.add(BatchNormalization())
-
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(4, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
+model.add(Convolution2D(24, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
 model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(4, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
+model.add(Convolution2D(48, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
 model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(4, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
+model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
 model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
 
+model.add(ZeroPadding2D((1, 1)))
+model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
+model.add(Dropout(DROPOUT))
+model.add(ELU())
+model.add(BatchNormalization())
 
 model.add(Flatten())
 
-model.add(Dense(8))
+model.add(Dense(96))
 model.add(Dropout(DROPOUT))
 model.add(ELU())
 model.add(BatchNormalization())
