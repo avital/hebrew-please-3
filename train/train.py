@@ -16,7 +16,7 @@ import os
 
 model = Sequential()
 
-L2_REGULARIZATION = 0.000
+L2_REGULARIZATION = 0.01
 INITIAL_DROPOUT = 0.2
 DROPOUT = 0
 FC_DROPOUT = 0.5
@@ -54,12 +54,12 @@ model.add(BatchNormalization())
 model.add(Flatten())
 
 model.add(Dropout(FC_DROPOUT))
-model.add(Dense(96))
+model.add(Dense(96, W_regularizer=l2(L2_REGULARIZATION)))
 model.add(ELU())
 model.add(BatchNormalization())
 
 model.add(Dropout(FC_DROPOUT))
-model.add(Dense(1))
+model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
 model.add(Activation('sigmoid'))
 
 model.compile(optimizer=Adadelta(),
