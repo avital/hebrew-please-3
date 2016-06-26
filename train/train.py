@@ -112,7 +112,7 @@ model.fit(
     validation_data=(val_data, val_labels),
     callbacks=[
         ModelCheckpoint(filepath="/mnt/weights.{epoch:02d}-{val_acc:.2f}.hdf5"),
-        EarlyStopping(patience=5000)
+        EarlyStopping(monitor='val_loss', patience=2)
     ]
 )
 
