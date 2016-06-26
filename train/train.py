@@ -86,19 +86,23 @@ def load_data_from_samples(samples_dir):
 
     return numpy.stack(data)
 
-data0 = load_data_from_samples('../process-videos/data/0')
-labels0 = [0] * len(data0)
-data1 = load_data_from_samples('../process-videos/data/1')
-labels1 = [1] * len(data1)
-data = numpy.concatenate((data0, data1))
-labels = labels0 + labels1
+def load_from_labelled_dirs(dir_0, dir_1):
+    data0 = load_data_from_samples(dir_0)
+    labels0 = [0] * len(data0)
+    data1 = load_data_from_samples(dir_1)
+    labels1 = [1] * len(data1)
+    data = numpy.concatenate((data0, data1))
+    labels = labels0 + labels1
+    return (data, labels)
 
-val_data0 = load_data_from_samples('../process-videos/data/0-val')
-val_labels0 = [0] * len(val_data0)
-val_data1 = load_data_from_samples('../process-videos/data/1-val')
-val_labels1 = [1] * len(val_data1)
-val_data = numpy.concatenate((val_data0, val_data1))
-val_labels = val_labels0 + val_labels1
+(data, labels) = load_from_labelled_dirs(
+    '../process-videos/data/0',
+    '../process-videos/data/1',
+)
+(val_data, val_labels) = load_from_labelled_dirs(
+    '../process-videos/data/0-val',
+    '../process-videos/data/1-val',
+)
 
 model.fit(
     data,
