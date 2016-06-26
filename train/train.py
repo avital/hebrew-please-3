@@ -1,11 +1,4 @@
-from keras.models import Sequential
-from keras.optimizers import Adadelta
-from keras.layers.core import Dense, Activation, Flatten, Dropout
-from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
-from keras.layers.advanced_activations import LeakyReLU
-from keras.regularizers import l2, activity_l2
-from keras.layers.advanced_activations import ELU
-from keras.layers.normalization import BatchNormalization
+from model import make_model
 
 import numpy
 from scipy import ndimage
@@ -14,67 +7,47 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
 
 import os
 
-model = Sequential()
+def main():
+    model = make_model()
+    json_string = model.to_json()
+    open('architecture.json', 'w').write(json_string)
 
-L2_REGULARIZATION = 0.1
-INITIAL_DROPOUT = 0.2
-DROPOUT = 0
-FC_DROPOUT = 0.5
+    data = None
+    labels = []
 
-model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
-model.add(Dropout(INITIAL_DROPOUT))
+    (data, labels) = load_from_labelled_dirs(
+        '../process-videos/data/0',
+        '../process-videos/data/1'
+    )
+#    (data, labels) = resample(data, labels)
 
-model.add(Convolution2D(8, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(ELU())
-model.add(BatchNormalization())
+    (val_data, val_labels) = load_from_labelled_dirs(
+        '../process-videos/data/0-val',
+        '../process-videos/data/1-val'
+    )
 
-model.add(Dropout(DROPOUT))
-model.add(Convolution2D(24, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(ELU())
-model.add(BatchNormalization())
+    model.fit(
+        data,
+        labels,
+        nb_epoch=10000,
+        batch_size=128,
+        validation_data=(val_data, val_labels),
+        callbacks=[
+            ModelCheckpoint(filepath="/mnt/weights.{epoch:02d}-{val_acc:.2f}.hdf5"),
+            EarlyStopping(monitor='val_loss', patience=1)
+        ]
+    )
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Dropout(DROPOUT))
-model.add(Convolution2D(48, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(ELU())
-model.add(BatchNormalization())
+def load_from_labelled_dirs(dir_0, dir_1):
+    data0 = load_samples(dir_0)
+    labels0 = [0] * len(data0)
+    data1 = load_samples(dir_1)
+    labels1 = [1] * len(data1)
+    data = numpy.concatenate((data0, data1))
+    labels = labels0 + labels1
+    return (data, labels)
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Dropout(DROPOUT))
-model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(ELU())
-model.add(BatchNormalization())
-
-model.add(ZeroPadding2D((1, 1)))
-model.add(Dropout(DROPOUT))
-model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-model.add(ELU())
-model.add(BatchNormalization())
-
-model.add(Flatten())
-
-model.add(Dropout(FC_DROPOUT))
-model.add(Dense(96, W_regularizer=l2(L2_REGULARIZATION)))
-model.add(ELU())
-model.add(BatchNormalization())
-
-model.add(Dropout(FC_DROPOUT))
-model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
-model.add(Activation('sigmoid'))
-
-model.compile(optimizer=Adadelta(),
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
-
-json_string = model.to_json()
-open('my_model_architecture.json', 'w').write(json_string)
-
-data = None
-labels = []
-
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-def load_data_from_samples(samples_dir):
+def load_samples(samples_dir):
     data = []
     snippets = os.listdir(samples_dir)
 
@@ -86,35 +59,11 @@ def load_data_from_samples(samples_dir):
 
     return numpy.stack(data)
 
-def load_from_labelled_dirs(dir_0, dir_1):
-    data0 = load_data_from_samples(dir_0)
-    labels0 = [0] * len(data0)
-    data1 = load_data_from_samples(dir_1)
-    labels1 = [1] * len(data1)
-    data = numpy.concatenate((data0, data1))
-    labels = labels0 + labels1
-    return (data, labels)
 
-(data, labels) = load_from_labelled_dirs(
-    '../process-videos/data/0',
-    '../process-videos/data/1',
-)
-(val_data, val_labels) = load_from_labelled_dirs(
-    '../process-videos/data/0-val',
-    '../process-videos/data/1-val',
-)
+if __name__ == '__main__':
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    main()
 
-model.fit(
-    data,
-    labels,
-    nb_epoch=10000,
-    batch_size=128,
-    validation_data=(val_data, val_labels),
-    callbacks=[
-        ModelCheckpoint(filepath="/mnt/weights.{epoch:02d}-{val_acc:.2f}.hdf5"),
-        EarlyStopping(monitor='val_loss', patience=2)
-    ]
-)
 
 
 
