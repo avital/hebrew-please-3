@@ -16,7 +16,7 @@ import os
 
 model = Sequential()
 
-L2_REGULARIZATION = 0.01
+L2_REGULARIZATION = 0.03
 INITIAL_DROPOUT = 0.2
 DROPOUT = 0
 FC_DROPOUT = 0.5
