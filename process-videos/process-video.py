@@ -81,7 +81,7 @@ def cut_random_segment(in_wav_file, out_wav_file):
     ])
 
 def stretch(in_wav_file, out_wav_file):
-    factor = math.exp(random.uniform(math.log(0.9), math.log(1.1)))
+    factor = math.exp(random.uniform(math.log(0.7), math.log(1.42)))
     subprocess.check_call([
         'sox',
         in_wav_file,
@@ -95,6 +95,7 @@ def stretch(in_wav_file, out_wav_file):
     ])
 
 def add_random_noise(in_wav_file, noise_wav_file, out_wav_file):
+    factor = random.uniform(0, 0.1)
     subprocess.check_call([
         'sox',
         in_wav_file,
@@ -102,7 +103,7 @@ def add_random_noise(in_wav_file, noise_wav_file, out_wav_file):
         'synth',
         'whitenoise',
         'vol',
-        '0.02',
+        str(factor),
     ])
     subprocess.check_call([
         'sox',
