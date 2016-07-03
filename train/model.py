@@ -15,7 +15,7 @@ def make_model():
     DROPOUT = 0
     FC_DROPOUT = 0.5
 
-    model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
+    model.add(ZeroPadding2D((1, 1), input_shape=(1, 129, 160)))
     model.add(Dropout(INITIAL_DROPOUT))
 
     model.add(Convolution2D(8, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
@@ -33,22 +33,15 @@ def make_model():
     model.add(ELU())
     model.add(BatchNormalization())
 
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Dropout(DROPOUT))
-    model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
-    model.add(BatchNormalization())
-
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Dropout(DROPOUT))
-    model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
-    model.add(BatchNormalization())
-
     model.add(Flatten())
 
     model.add(Dropout(FC_DROPOUT))
     model.add(Dense(96, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(ELU())
+    model.add(BatchNormalization())
+
+    model.add(Dropout(FC_DROPOUT))
+    model.add(Dense(24, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(ELU())
     model.add(BatchNormalization())
 
