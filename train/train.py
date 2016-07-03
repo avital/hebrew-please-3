@@ -2,6 +2,7 @@ from model import make_model
 
 import numpy
 from scipy import ndimage
+import random
 
 from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
 
@@ -36,6 +37,8 @@ def main():
             EarlyStopping(monitor='val_loss', patience=5)
         ]
     )
+
+    model.save_weights('weights-{0}.hdf5'.format(random.choice(xrange(100, 1000))))
 
 def load_from_labelled_dirs(dir_0, dir_1, bootstrap_resample=False):
     data0 = load_samples(dir_0, bootstrap_resample)
