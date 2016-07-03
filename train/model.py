@@ -53,6 +53,11 @@ def make_model():
     model.add(BatchNormalization())
 
     model.add(Dropout(FC_DROPOUT))
+    model.add(Dense(24, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(ELU())
+    model.add(BatchNormalization())
+
+    model.add(Dropout(FC_DROPOUT))
     model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(Activation('sigmoid'))
 
