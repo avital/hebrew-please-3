@@ -5,8 +5,8 @@ import math
 
 from utils import make_sure_path_exists
 
-NUM_TRAINING_EXAMPLES=6000
-NUM_VALIDATION_EXAMPLES=1000
+NUM_TRAINING_EXAMPLES=20000
+NUM_VALIDATION_EXAMPLES=4000
 
 VIDEOS_DATA_DIR='../download-videos/data/'
 
@@ -51,7 +51,7 @@ def make_validation_examples():
         example_dir = 'data/{0}-val/{1}'.format(label, i)
         make_sure_path_exists(example_dir)
 
-        label_videos_dir = '{0}/{1}'.format(VIDEOS_DATA_DIR, label)
+        label_videos_dir = '{0}/{1}-val'.format(VIDEOS_DATA_DIR, label)
         videos = os.listdir(label_videos_dir)
         video = random.choice(videos)
         wav_file = '{0}/{1}/audio.wav'.format(label_videos_dir, video)
