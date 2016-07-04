@@ -40,7 +40,7 @@ def main(build_secondary_model):
         batch_size=128,
         validation_data=(val_data, val_labels),
         callbacks=[
-            EarlyStopping(monitor='val_loss', patience=5)
+            EarlyStopping(monitor='val_loss', patience=3)
         ]
     )
 
