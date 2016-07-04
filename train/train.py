@@ -1,5 +1,6 @@
 from model import make_model
 
+import sys
 import numpy
 from scipy import ndimage
 import random
@@ -8,7 +9,7 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
 
 import os
 
-def main():
+def main(build_secondary_model):
     model = make_model()
     json_string = model.to_json()
     open('architecture.json', 'w').write(json_string)
@@ -19,12 +20,18 @@ def main():
     (data, labels) = load_from_labelled_dirs(
         '../process-videos/data/0',
         '../process-videos/data/1',
-        bootstrap_resample=True
+        bootstrap_resample=build_secondary_model
     )
     (val_data, val_labels) = load_from_labelled_dirs(
         '../process-videos/data/0-val',
         '../process-videos/data/1-val'
     )
+
+    if build_secondary_model:
+        model.load_weights('weights-base.hdf5')
+        model_filename = 'weights-{0}'.format(random.choice(xrange(100, 1000)))
+    else:
+        model_filename = 'weights-base.hdf5'
 
     model.fit(
         data,
@@ -33,12 +40,11 @@ def main():
         batch_size=128,
         validation_data=(val_data, val_labels),
         callbacks=[
-            ModelCheckpoint(filepath="/mnt/weights.{epoch:02d}-{val_acc:.2f}.hdf5"),
             EarlyStopping(monitor='val_loss', patience=5)
         ]
     )
 
-    model.save_weights('weights-{0}.hdf5'.format(random.choice(xrange(100, 1000))))
+    model.save_weights(model_filename)
 
 def load_from_labelled_dirs(dir_0, dir_1, bootstrap_resample=False):
     data0 = load_samples(dir_0, bootstrap_resample)
@@ -69,7 +75,11 @@ def load_samples(samples_dir, bootstrap_resample):
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    main()
+
+    if sys.argv[1] == 'secondary':
+        main(True)
+    else:
+        main(False)
 
 
 
