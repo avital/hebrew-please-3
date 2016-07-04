@@ -29,7 +29,7 @@ def main(build_secondary_model):
 
     if build_secondary_model:
         model.load_weights('weights-base.hdf5')
-        model_filename = 'weights-{0}'.format(random.choice(xrange(100, 1000)))
+        model_filename = 'weights-{0}.hdf5'.format(random.choice(xrange(100, 1000)))
     else:
         model_filename = 'weights-base.hdf5'
 
