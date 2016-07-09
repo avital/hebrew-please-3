@@ -32,9 +32,12 @@ def make_training_examples():
         stretched_segment_file = '{0}/stretched.wav'.format(example_dir)
         stretch(random_segment_file, stretched_segment_file)
 
-        noise_file = '{0}/noise.wav'.format(example_dir)
-        noisy_segment_file = '{0}/noisy.wav'.format(example_dir)
-        add_random_noise(stretched_segment_file, noise_file, noisy_segment_file)
+        if random.uniform(0, 1) < 0.4:
+            noise_file = '{0}/noise.wav'.format(example_dir)
+            noisy_segment_file = '{0}/noisy.wav'.format(example_dir)
+            add_random_noise(stretched_segment_file, noise_file, noisy_segment_file)
+        else:
+            noisy_segment_file = stretched_segment_file
 
         normalized_segment_file = '{0}/normalized.wav'.format(example_dir)
         normalize(noisy_segment_file, normalized_segment_file)
