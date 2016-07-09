@@ -9,35 +9,36 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
 
 import os
 
-def main(build_secondary_model):
+def main():
     model = make_model()
     json_string = model.to_json()
     open('architecture.json', 'w').write(json_string)
 
-    data = None
-    labels = []
-
-    (data, labels) = load_from_labelled_dirs(
-        '../process-videos/data/0',
-        '../process-videos/data/1',
-        bootstrap_resample=build_secondary_model
-    )
     (val_data, val_labels) = load_from_labelled_dirs(
         '../process-videos/data/0-val',
         '../process-videos/data/1-val'
     )
 
-    if build_secondary_model:
-        model.load_weights('weights-base.hdf5')
-        model_filename = 'weights-{0}.hdf5'.format(random.choice(xrange(100, 1000)))
-    else:
-        model_filename = 'weights-base.hdf5'
+    def data_generator():
+        batch_size = 64
+        while True:
+            batch_data = []
+            batch_labels = []
+            for i in xrange(batch_size):
+                label = random.choice([0, 1])
+                samples_dir = '../process-videos/data/{0}'.format(label)
+                sample = random.choice(os.listdir(samples_dir))
+                sample_dir = '{0}/{1}'.format(samples_dir, sample)
+                image_matrix = ndimage.imread('{0}/spectrogram.png'.format(sample_dir), flatten=True)
+                image_tensor = numpy.expand_dims(image_matrix, axis=0)
+                batch_data.append(image_tensor)
+                batch_labels.append(label)
+            yield (numpy.stack(batch_data), batch_labels)
 
-    model.fit(
-        data,
-        labels,
+    model.fit_generator(
+        data_generator(),
+        samples_per_epoch=30000,
         nb_epoch=10000,
-        batch_size=128,
         validation_data=(val_data, val_labels),
         callbacks=[
             EarlyStopping(monitor='val_loss', patience=3)
@@ -46,11 +47,11 @@ def main(build_secondary_model):
 
     model.save_weights(model_filename)
 
-def load_from_labelled_dirs(dir_0, dir_1, bootstrap_resample=False):
-    data0 = load_samples(dir_0, bootstrap_resample)
+def load_from_labelled_dirs(dir_0, dir_1):
+    data0 = load_samples(dir_0)
     labels0 = [0] * len(data0)
 
-    data1 = load_samples(dir_1, bootstrap_resample)
+    data1 = load_samples(dir_1)
     labels1 = [1] * len(data1)
 
     data = numpy.concatenate((data0, data1))
@@ -58,12 +59,9 @@ def load_from_labelled_dirs(dir_0, dir_1, bootstrap_resample=False):
 
     return (data, labels)
 
-def load_samples(samples_dir, bootstrap_resample):
+def load_samples(samples_dir):
     data = []
     snippets = os.listdir(samples_dir)
-
-    if bootstrap_resample:
-        snippets = numpy.random.choice(snippets, (len(snippets)))
 
     for snippet_id in snippets:
         dir = '{0}/{1}'.format(samples_dir, snippet_id)
@@ -75,11 +73,7 @@ def load_samples(samples_dir, bootstrap_resample):
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-    if sys.argv[1] == 'secondary':
-        main(True)
-    else:
-        main(False)
+    main()
 
 
 
