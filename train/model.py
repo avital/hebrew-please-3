@@ -10,7 +10,7 @@ from keras.layers.normalization import BatchNormalization
 def make_model():
     model = Sequential()
 
-    L2_REGULARIZATION = 0.1
+    L2_REGULARIZATION = 0.3
     INITIAL_DROPOUT = 0.2
     DROPOUT = 0
     FC_DROPOUT = 0.5

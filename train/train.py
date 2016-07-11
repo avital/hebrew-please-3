@@ -20,7 +20,7 @@ def main():
     )
 
     def data_generator():
-        batch_size = 64
+        batch_size = 128
         while True:
             batch_data = []
             batch_labels = []
@@ -37,11 +37,11 @@ def main():
 
     model.fit_generator(
         data_generator(),
-        samples_per_epoch=30000,
+        samples_per_epoch=2048,
         nb_epoch=10000,
         validation_data=(val_data, val_labels),
         callbacks=[
-            EarlyStopping(monitor='loss', patience=15)
+            EarlyStopping(monitor='val_acc')
         ]
     )
 
