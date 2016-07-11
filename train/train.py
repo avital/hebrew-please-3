@@ -45,7 +45,7 @@ def main():
         ]
     )
 
-    model.save_weights(model_filename)
+    model.save_weights('weights.hdf5')
 
 def load_from_labelled_dirs(dir_0, dir_1):
     data0 = load_samples(dir_0)
