@@ -6,6 +6,7 @@ from scipy import ndimage
 import random
 
 from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
+from make_training_example import make_training_example
 
 import os
 
@@ -14,10 +15,10 @@ def main():
     json_string = model.to_json()
     open('architecture.json', 'w').write(json_string)
 
-    (val_data, val_labels) = load_from_labelled_dirs(
-        '../process-videos/data/0-val',
-        '../process-videos/data/1-val'
-    )
+#    (val_data, val_labels) = load_from_labelled_dirs(
+#        '../process-videos/data/0-val',
+#        '../process-videos/data/1-val'
+#    )
 
     def data_generator():
         batch_size = 128
@@ -26,10 +27,8 @@ def main():
             batch_labels = []
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
-                samples_dir = '../process-videos/data/{0}'.format(label)
-                sample = random.choice(os.listdir(samples_dir))
-                sample_dir = '{0}/{1}'.format(samples_dir, sample)
-                image_matrix = ndimage.imread('{0}/spectrogram.png'.format(sample_dir), flatten=True)
+                image_spectrogram = make_training_example(label, augment=True)
+                image_matrix = ndimage.imread(image_spectrogram, flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
                 batch_data.append(image_tensor)
                 batch_labels.append(label)
@@ -39,10 +38,11 @@ def main():
         data_generator(),
         samples_per_epoch=2048,
         nb_epoch=10000,
-        validation_data=(val_data, val_labels),
-        callbacks=[
-            EarlyStopping(monitor='val_acc')
-        ]
+#        validation_data=(val_data, val_labels),
+#        validation_split=0.8,
+#        callbacks=[
+#           EarlyStopping(monitor='val_acc')
+#        ]
     )
 
     model.save_weights('weights.hdf5')
