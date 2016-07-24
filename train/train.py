@@ -21,22 +21,27 @@ def main():
 #    )
 
     def data_generator():
-        batch_size = 128
+        batch_size = 32
         while True:
             batch_data = []
             batch_labels = []
-            for i in xrange(batch_size):
+
+            def add_example():
                 label = random.choice([0, 1])
                 image_spectrogram = make_training_example(label, augment=True)
                 image_matrix = ndimage.imread(image_spectrogram, flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
                 batch_data.append(image_tensor)
                 batch_labels.append(label)
+
+            for i in xrange(batch_size):
+                add_example()
+
             yield (numpy.stack(batch_data), batch_labels)
 
     model.fit_generator(
         data_generator(),
-        samples_per_epoch=2048,
+        samples_per_epoch=512,
         nb_epoch=10000,
 #        validation_data=(val_data, val_labels),
 #        validation_split=0.8,

@@ -1,6 +1,9 @@
 import random
+import os
+import subprocess
+import math
 
-VIEOS_DATA_DIR='../download-videos/data'
+VIDEOS_DATA_DIR='../download-videos/data'
 
 def make_training_example(label, augment):
     example_dir = 'training-examples/{0}/{1}'.format(label, random.randint(0, 1000000000))
