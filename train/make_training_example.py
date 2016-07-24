@@ -7,7 +7,7 @@ import errno
 VIDEOS_DATA_DIR='../download-videos/data'
 
 def make_training_example(label, augment):
-    example_dir = 'training-examples/{0}/{1}'.format(label, random.randint(0, 1000000000))
+    example_dir = '/dev/shm/training-example/'
     make_sure_path_exists(example_dir)
 
     label_videos_dir = '{0}/{1}'.format(VIDEOS_DATA_DIR, label)
