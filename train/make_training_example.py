@@ -2,6 +2,7 @@ import random
 import os
 import subprocess
 import math
+import errno
 
 VIDEOS_DATA_DIR='../download-videos/data'
 

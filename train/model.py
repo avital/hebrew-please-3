@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.optimizers import Adadelta
+from keras.optimizers import Adadelta, Adam
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
@@ -10,10 +10,10 @@ from keras.layers.normalization import BatchNormalization
 def make_model():
     model = Sequential()
 
-    L2_REGULARIZATION = 0.3
-    INITIAL_DROPOUT = 0.2
+    L2_REGULARIZATION = 0
+    INITIAL_DROPOUT = 0
     DROPOUT = 0
-    FC_DROPOUT = 0.5
+    FC_DROPOUT = 0
 
     model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
     model.add(Dropout(INITIAL_DROPOUT))
@@ -61,7 +61,7 @@ def make_model():
     model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(Activation('sigmoid'))
 
-    model.compile(optimizer=Adadelta(),
+    model.compile(optimizer=Adam(),
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
