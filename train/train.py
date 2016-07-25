@@ -41,7 +41,6 @@ def main():
         nb_epoch=10000,
         validation_data=(val_data, val_labels),
         callbacks=[
-            EarlyStopping(monitor='val_acc')
         ]
     )
 
