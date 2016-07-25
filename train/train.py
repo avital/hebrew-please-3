@@ -9,6 +9,11 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
 
 import os
 
+samples = {
+  0: os.listdir('../process-videos/data/0'),
+  1: os.listdir('../process-videos/data/1')
+}
+
 def main():
     model = make_model()
     json_string = model.to_json()
@@ -27,7 +32,7 @@ def main():
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
                 samples_dir = '../process-videos/data/{0}'.format(label)
-                sample = random.choice(os.listdir(samples_dir))
+                sample = random.choice(samples[label])
                 sample_dir = '{0}/{1}'.format(samples_dir, sample)
                 image_matrix = ndimage.imread('{0}/spectrogram.png'.format(sample_dir), flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
