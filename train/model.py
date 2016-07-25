@@ -10,52 +10,52 @@ from keras.layers.normalization import BatchNormalization
 def make_model():
     model = Sequential()
 
-    L2_REGULARIZATION = 0.3
-    INITIAL_DROPOUT = 0.2
+    L2_REGULARIZATION = 0
+    INITIAL_DROPOUT = 0
     DROPOUT = 0
-    FC_DROPOUT = 0.5
+    FC_DROPOUT = 0
 
     model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
     model.add(Dropout(INITIAL_DROPOUT))
 
     model.add(Convolution2D(8, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(Dropout(DROPOUT))
     model.add(Convolution2D(24, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(ZeroPadding2D((1, 1)))
     model.add(Dropout(DROPOUT))
     model.add(Convolution2D(48, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(ZeroPadding2D((1, 1)))
     model.add(Dropout(DROPOUT))
     model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(ZeroPadding2D((1, 1)))
     model.add(Dropout(DROPOUT))
     model.add(Convolution2D(96, 3, 3, subsample=(2, 2), W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(Flatten())
 
     model.add(Dropout(FC_DROPOUT))
     model.add(Dense(96, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(Dropout(FC_DROPOUT))
     model.add(Dense(24, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(ELU())
     model.add(BatchNormalization())
+    model.add(ELU())
 
     model.add(Dropout(FC_DROPOUT))
     model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
