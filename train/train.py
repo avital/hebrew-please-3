@@ -5,7 +5,7 @@ import numpy
 from scipy import ndimage
 import random
 
-from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping
+from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, TensorBoard
 
 import os
 
@@ -43,9 +43,10 @@ def main():
     model.fit_generator(
         data_generator(),
         samples_per_epoch=2048,
-        nb_epoch=10000,
+        nb_epoch=100,
         validation_data=(val_data, val_labels),
         callbacks=[
+            TensorBoard(log_dir='./logs', histogram_freq=20, write_graph=True)
         ]
     )
 
