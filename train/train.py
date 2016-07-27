@@ -11,9 +11,14 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, Tenso
 import os
 
 samples = {
-  0: os.listdir('../process-videos/data/0'),
-  1: os.listdir('../process-videos/data/1')
+  0: [num for num in os.listdir('../process-videos/data/0') if int(num) >= 1000]
+  1: [num for num in os.listdir('../process-videos/data/1') if int(num) >= 1000]
 }
+
+print samples[0].length
+print samples[1].length
+print
+
 
 def main():
     model = make_model()
@@ -21,8 +26,9 @@ def main():
     open('architecture.json', 'w').write(json_string)
 
     (val_data, val_labels) = load_from_labelled_dirs(
-        '../process-videos/data/0-val',
-        '../process-videos/data/1-val'
+        '../process-videos/data/0',
+        '../process-videos/data/1',
+        max_num=1000,
     )
 
     def val_data_generator():
@@ -33,7 +39,6 @@ def main():
             batch_labels = val_labels[cursor:cursor+batch_size]
             cursor = (cursor + batch_size) % len(val_data)
             yield (batch_data, batch_labels)
-           
 
     def data_generator():
         batch_size = 128
@@ -66,11 +71,11 @@ def main():
 
     model.save_weights('weights.hdf5')
 
-def load_from_labelled_dirs(dir_0, dir_1):
-    data0 = load_samples(dir_0)
+def load_from_labelled_dirs(dir_0, dir_1, max_num=99999999999):
+    data0 = load_samples(dir_0, max_num)
     labels0 = [0] * len(data0)
 
-    data1 = load_samples(dir_1)
+    data1 = load_samples(dir_1, max_num)
     labels1 = [1] * len(data1)
 
     data = numpy.concatenate((data0, data1))
@@ -78,15 +83,18 @@ def load_from_labelled_dirs(dir_0, dir_1):
 
     return (data, labels)
 
-def load_samples(samples_dir):
+def load_samples(samples_dir, max_num):
     data = []
     snippets = os.listdir(samples_dir)
 
     for snippet_id in snippets:
-        dir = '{0}/{1}'.format(samples_dir, snippet_id)
-        image_matrix = ndimage.imread('{0}/spectrogram.png'.format(dir), flatten=True)
-        image_tensor = numpy.expand_dims(image_matrix, axis=0)
-        data.append(image_tensor)
+        if int(snippet_id) < max_num:
+            dir = '{0}/{1}'.format(samples_dir, snippet_id)
+            image_matrix = ndimage.imread('{0}/spectrogram.png'.format(dir), flatten=True)
+            image_tensor = numpy.expand_dims(image_matrix, axis=0)
+            data.append(image_tensor)
+        else:
+            print('Skipping {0}'.format(snippet_id))
 
     return numpy.stack(data)
 
