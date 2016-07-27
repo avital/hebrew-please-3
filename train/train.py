@@ -4,6 +4,7 @@ import sys
 import numpy
 from scipy import ndimage
 import random
+import socket
 
 from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, TensorBoard
 
@@ -57,7 +58,9 @@ def main():
         validation_data=val_data_generator(),
         nb_val_samples=len(val_data),
         callbacks=[
-            TensorBoard(log_dir='./logs', histogram_freq=20, write_graph=True)
+            TensorBoard(log_dir='/mnt/nfs/logs-{0}'.format(socket.gethostname(),
+                        histogram_freq=20,
+                        write_graph=True)
         ]
     )
 
