@@ -24,6 +24,16 @@ def main():
         '../process-videos/data/1-val'
     )
 
+    def val_data_generator():
+        batch_size = 50
+        cursor = 0
+        while True:
+            batch_data = val_data[cursor:cursor+batch_size]
+            batch_labels = val_labels[cursor:cursor+batch_size]
+            cursor = (cursor + batch_size) % len(val_data)
+            yield (batch_data, batch_labels)
+           
+
     def data_generator():
         batch_size = 128
         while True:
@@ -44,7 +54,8 @@ def main():
         data_generator(),
         samples_per_epoch=2048,
         nb_epoch=100,
-        validation_data=(val_data, val_labels),
+        validation_data=val_data_generator(),
+        nb_val_samples=len(val_data),
         callbacks=[
             TensorBoard(log_dir='./logs', histogram_freq=20, write_graph=True)
         ]
@@ -79,7 +90,6 @@ def load_samples(samples_dir):
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     main()
-
 
 
 
