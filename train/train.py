@@ -58,7 +58,7 @@ def main():
         validation_data=val_data_generator(),
         nb_val_samples=len(val_data),
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-{0}'.format(socket.gethostname(),
+            TensorBoard(log_dir='/mnt/nfs/logs-{0}'.format(socket.gethostname()),
                         histogram_freq=20,
                         write_graph=True)
         ]
