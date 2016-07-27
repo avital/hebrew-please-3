@@ -11,7 +11,7 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, Tenso
 import os
 
 samples = {
-  0: [num for num in os.listdir('../process-videos/data/0') if int(num) >= 1000]
+  0: [num for num in os.listdir('../process-videos/data/0') if int(num) >= 1000],
   1: [num for num in os.listdir('../process-videos/data/1') if int(num) >= 1000]
 }
 
