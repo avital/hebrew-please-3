@@ -14,7 +14,7 @@ samples = {
   0: [num for num in os.listdir('../process-videos/data/0') if int(num) >= 1000],
   1: [num for num in os.listdir('../process-videos/data/1') if int(num) >= 1000]
 }
-
+num_samples = len(samples[0]) + len(samples[1])
 
 def main():
     model = make_model()
@@ -59,7 +59,7 @@ def main():
         validation_data=val_data_generator(),
         nb_val_samples=len(val_data),
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-{0}'.format(socket.gethostname()),
+            TensorBoard(log_dir='/mnt/nfs/logs-{0}'.format(num_samples),
                         histogram_freq=20,
                         write_graph=True)
         ]
