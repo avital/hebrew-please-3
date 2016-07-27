@@ -15,10 +15,6 @@ samples = {
   1: [num for num in os.listdir('../process-videos/data/1') if int(num) >= 1000]
 }
 
-print samples[0].length
-print samples[1].length
-print
-
 
 def main():
     model = make_model()
@@ -93,8 +89,6 @@ def load_samples(samples_dir, max_num):
             image_matrix = ndimage.imread('{0}/spectrogram.png'.format(dir), flatten=True)
             image_tensor = numpy.expand_dims(image_matrix, axis=0)
             data.append(image_tensor)
-        else:
-            print('Skipping {0}'.format(snippet_id))
 
     return numpy.stack(data)
 
