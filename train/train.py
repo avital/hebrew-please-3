@@ -11,14 +11,14 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, Tenso
 import os
 
 samples = {
-  0: [file for file in os.listdir('../data/training/v0/hebrew') if file.endswith('.spectrogram.png')],
-  1: [file for file in os.listdir('../data/training/v0/english') if file.endswith('.spectrogram.png')],
+  0: [file for file in os.listdir('../data/nn/v0/train/hebrew/') if file.endswith('.spectrogram.png')],
+  1: [file for file in os.listdir('../data/nn/v0/train/english/') if file.endswith('.spectrogram.png')],
 }
 num_samples = len(samples[0]) + len(samples[1])
 
 val_samples = {
-  0: [file for file in os.listdir('../data/validation/v0/hebrew') if file.endswith('.spectrogram.png')],
-  1: [file for file in os.listdir('../data/validation/v0/english') if file.endswith('.spectrogram.png')],
+  0: [file for file in os.listdir('../data/nn/v0/2nd-val/hebrew') if file.endswith('.spectrogram.png')],
+  1: [file for file in os.listdir('../data/nn/v0/2nd-val/english') if file.endswith('.spectrogram.png')],
 }
 num_val_samples = len(val_samples[0]) + len(val_samples[1])
 
