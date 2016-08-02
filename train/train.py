@@ -34,7 +34,7 @@ def main():
             batch_labels = []
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
-                samples_dir = '../data/training/v0/{0}'.format('english' if label else 'hebrew')
+                samples_dir = '../data/nn/v0/train/{0}'.format('english' if label else 'hebrew')
                 sample = random.choice(samples[label])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
                 image_matrix = ndimage.imread(spectrogram_file, flatten=True)
@@ -50,7 +50,7 @@ def main():
             batch_labels = []
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
-                samples_dir = '../data/validation/v0/{0}'.format('english' if label else 'hebrew')
+                samples_dir = '../data/nn/v0/2nd-val/{0}'.format('english' if label else 'hebrew')
                 sample = random.choice(val_samples[label])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
                 image_matrix = ndimage.imread(spectrogram_file, flatten=True)
@@ -62,11 +62,11 @@ def main():
     model.fit_generator(
         data_generator(),
         samples_per_epoch=2048,
-        nb_epoch=100,
+        nb_epoch=300,
         validation_data=val_data_generator(),
         nb_val_samples=128,
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-{0}'.format(num_samples),
+            TensorBoard(log_dir='/mnt/nfs/logs-v1-2ndval-{0}'.format(num_samples),
                         histogram_freq=20,
                         write_graph=True)
         ]
