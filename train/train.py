@@ -11,16 +11,9 @@ from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, Tenso
 import os
 
 samples = {
-  0: [file for file in os.listdir('../data/nn/v0/train/hebrew/') if file.endswith('.spectrogram.png')],
-  1: [file for file in os.listdir('../data/nn/v0/train/english/') if file.endswith('.spectrogram.png')],
+  samples_dir: [file for file in os.listdir(samples_dir) if file.endswith('.spectrogram.png')]
+    for samples_dir in ['../data/nn/v0/train/english', '../data/nn/v0/train/english-avital', '../data/nn/v0/train/hebrew', '../data/nn/v0/train/hebrew-avital', '../data/nn/v0/2nd-val/hebrew', '../data/nn/v0/2nd-val/english']
 }
-num_samples = len(samples[0]) + len(samples[1])
-
-val_samples = {
-  0: [file for file in os.listdir('../data/nn/v0/2nd-val/hebrew') if file.endswith('.spectrogram.png')],
-  1: [file for file in os.listdir('../data/nn/v0/2nd-val/english') if file.endswith('.spectrogram.png')],
-}
-num_val_samples = len(val_samples[0]) + len(val_samples[1])
 
 def main():
     model = make_model()
@@ -35,7 +28,9 @@ def main():
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
                 samples_dir = '../data/nn/v0/train/{0}'.format('english' if label else 'hebrew')
-                sample = random.choice(samples[label])
+                if random.choice([1]):
+                    samples_dir = samples_dir + '-avital'
+                sample = random.choice(samples[samples_dir])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
                 image_matrix = ndimage.imread(spectrogram_file, flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
@@ -51,7 +46,7 @@ def main():
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
                 samples_dir = '../data/nn/v0/2nd-val/{0}'.format('english' if label else 'hebrew')
-                sample = random.choice(val_samples[label])
+                sample = random.choice(samples[samples_dir])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
                 image_matrix = ndimage.imread(spectrogram_file, flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
@@ -66,7 +61,7 @@ def main():
         validation_data=val_data_generator(),
         nb_val_samples=128,
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-v1-2ndval-{0}'.format(num_samples),
+            TensorBoard(log_dir='/mnt/nfs/logs-v1-with-avital-only-2ndval-0x30000',
                         histogram_freq=20,
                         write_graph=True)
         ]
