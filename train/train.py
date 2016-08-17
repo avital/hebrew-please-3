@@ -22,7 +22,7 @@ def main():
     open('architecture.json', 'w').write(json_string)
 
     def data_generator():
-        batch_size = 128
+        batch_size = 32
         while True:
             random.seed(time.time())
             batch_data = []
@@ -62,9 +62,9 @@ def main():
         samples_per_epoch=2048,
         nb_epoch=300,
         validation_data=val_data_generator(),
-        nb_val_samples=128,
+        nb_val_samples=32,
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-v1-wider--with-avital-3-training-files-only-2ndval-0x30000',
+            TensorBoard(log_dir='/mnt/nfs/logs-v1-wider--with-avital-3-really-training-files-only-2ndval-0x30000',
                         histogram_freq=20,
                         write_graph=True)
         ]
