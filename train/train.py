@@ -5,6 +5,7 @@ import numpy
 from scipy import ndimage
 import random
 import socket
+import time
 
 from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, TensorBoard
 
@@ -23,6 +24,7 @@ def main():
     def data_generator():
         batch_size = 128
         while True:
+            random.seed(time.time())
             batch_data = []
             batch_labels = []
             for i in xrange(batch_size):
@@ -41,6 +43,7 @@ def main():
     def val_data_generator():
         batch_size = 32
         while True:
+            random.seed(1)
             batch_data = []
             batch_labels = []
             for i in xrange(batch_size):
