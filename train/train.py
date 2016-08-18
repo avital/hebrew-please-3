@@ -17,12 +17,13 @@ samples = {
 }
 
 def main():
+    nb_val_samples = 128
     model = make_model()
     json_string = model.to_json()
     open('architecture.json', 'w').write(json_string)
 
     def data_generator():
-        batch_size = 32
+        batch_size = 16
         while True:
             random.seed(time.time())
             batch_data = []
@@ -41,9 +42,11 @@ def main():
             yield (numpy.stack(batch_data), batch_labels)
 
     def val_data_generator():
-        batch_size = 32
+        batch_size = 16
+        index_in_val_batch = 0
         while True:
-            random.seed(1)
+            index_in_val_batch = (index_in_val_batch + batch_size) % nb_val_samples
+            random.seed(index_in_val_batch)
             batch_data = []
             batch_labels = []
             for i in xrange(batch_size):
@@ -64,8 +67,9 @@ def main():
         samples_per_epoch=2048,
         nb_epoch=300,
         validation_data=val_data_generator(),
-        nb_val_samples=32,
+        nb_val_samples=nb_val_samples,
         callbacks=[
+            ModelCheckpoint("weights.hdf5"),
             TensorBoard(log_dir='/mnt/nfs/X1-noise-1.0+l2-0.01',
                         histogram_freq=20,
                         write_graph=True)
