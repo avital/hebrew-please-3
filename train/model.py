@@ -11,7 +11,7 @@ from keras.layers.noise import GaussianNoise
 def make_model():
     model = Sequential()
 
-    L2_REGULARIZATION = 0
+    L2_REGULARIZATION = 0.01
     INITIAL_DROPOUT = 0
     DROPOUT = 0
     FC_DROPOUT = 0.5
@@ -31,31 +31,31 @@ def make_model():
     model.add(ELU())
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 81, 1))
+    model.add(Convolution2D(256, 81, 1), W_regularizer=l2(L2_REGULARIZATION))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3))
+    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3))
+    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3))
+    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3))
+    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3))
+    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3))
+    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
 
     model.add(Flatten())
 
