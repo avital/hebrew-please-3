@@ -57,6 +57,8 @@ def main():
                 batch_labels.append(label)
             yield (numpy.stack(batch_data), batch_labels)
 
+    model.load_weights('weights.hdf5')
+
     model.fit_generator(
         data_generator(),
         samples_per_epoch=2048,
@@ -64,7 +66,7 @@ def main():
         validation_data=val_data_generator(),
         nb_val_samples=32,
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-v1-wider--with-avital-3-really-training-files-only-2ndval-0x30000',
+            TensorBoard(log_dir='/mnt/nfs/logs-v1-wider--with-avital-3-really-training-files-only-2ndval-0x30000-noise-1.0',
                         histogram_freq=20,
                         write_graph=True)
         ]
