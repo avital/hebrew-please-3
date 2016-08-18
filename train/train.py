@@ -66,7 +66,7 @@ def main():
         validation_data=val_data_generator(),
         nb_val_samples=32,
         callbacks=[
-            TensorBoard(log_dir='/mnt/nfs/logs-v1-wider--with-avital-3-really-training-files-only-2ndval-0x30000-noise-1.0+l2-0.01',
+            TensorBoard(log_dir='/mnt/nfs/X1-noise-1.0+l2-0.01',
                         histogram_freq=20,
                         write_graph=True)
         ]
