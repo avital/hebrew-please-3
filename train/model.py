@@ -31,7 +31,7 @@ def make_model():
     model.add(ELU())
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 81, 1), W_regularizer=l2(L2_REGULARIZATION))
+    model.add(Convolution2D(256, 81, 1, W_regularizer=l2(L2_REGULARIZATION)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
