@@ -70,7 +70,7 @@ def main():
         nb_val_samples=nb_val_samples,
         callbacks=[
             ModelCheckpoint("weights.hdf5"),
-            TensorBoard(log_dir='/mnt/nfs/X1plus-noise-2.0+freql1-0.003+nonfreql2-0.01',
+            TensorBoard(log_dir='/mnt/nfs/X1-noise-2.0+freql1-0.003+nonfreql2-0.01',
                         histogram_freq=20,
                         write_graph=True)
         ]
