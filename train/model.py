@@ -61,21 +61,21 @@ def make_model():
     model.add(Flatten())
 
     model.add(Dropout(FC_DROPOUT))
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
+#    model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Dense(256, W_regularizer=l2(L2_REGULARIZATION)))
 
     model.add(BatchNormalization())
     model.add(ELU())
 
     model.add(Dropout(FC_DROPOUT))
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
+#    model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Dense(256, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(BatchNormalization())
     model.add(ELU())
 
     model.add(Dropout(FC_DROPOUT))
 
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
+#    model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(Activation('sigmoid'))
 
