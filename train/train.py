@@ -17,7 +17,7 @@ samples = {
 }
 
 def main():
-    nb_val_samples = 128
+    nb_val_samples = 512
     model = make_model()
     json_string = model.to_json()
     open('architecture.json', 'w').write(json_string)
@@ -60,7 +60,7 @@ def main():
                 batch_labels.append(label)
             yield (numpy.stack(batch_data), batch_labels)
 
-    model.load_weights('weights.hdf5')
+#    model.load_weights('weights.hdf5')
 
     model.fit_generator(
         data_generator(),
@@ -70,7 +70,7 @@ def main():
         nb_val_samples=nb_val_samples,
         callbacks=[
             ModelCheckpoint("weights.hdf5"),
-            TensorBoard(log_dir='/mnt/nfs/X1-noise-2.0+freql1-0.003+nonfreql2-0.01',
+            TensorBoard(log_dir='/mnt/nfs/X4',
                         histogram_freq=20,
                         write_graph=True)
         ]
