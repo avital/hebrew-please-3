@@ -3,7 +3,7 @@ from keras.optimizers import Adam
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, AveragePooling2D
 from keras.layers.advanced_activations import LeakyReLU
-from keras.regularizers import l2, activity_l2
+from keras.regularizers import l2, activity_l2, l1, l1l2
 from keras.layers.advanced_activations import ELU
 from keras.layers.normalization import BatchNormalization
 from keras.layers.noise import GaussianNoise
@@ -12,6 +12,7 @@ def make_model():
     model = Sequential()
 
     L2_REGULARIZATION = 0.01
+    L1_REGULARIZATION = 0.003
     INITIAL_DROPOUT = 0
     DROPOUT = 0
     FC_DROPOUT = 0.5
@@ -31,7 +32,7 @@ def make_model():
     model.add(ELU())
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 81, 1, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(Convolution2D(256, 81, 1, W_regularizer=l1(L1_REGULARIZATION)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
