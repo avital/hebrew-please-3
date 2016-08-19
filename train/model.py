@@ -17,7 +17,7 @@ def make_model():
     FC_DROPOUT = 0.5
     GAUSSIAN_NOISE = 2
 
-    model.add(ZeroPadding2D((1, 1), input_shape=(1, 257, 320)))
+    model.add(ZeroPadding2D((1, 1), input_shape=(1, 129, 320)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(32, 5, 3, subsample=(3, 2), W_regularizer=l2(L2_REGULARIZATION)))
@@ -31,7 +31,7 @@ def make_model():
     model.add(ELU())
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 81, 1, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(Convolution2D(256, 39, 1, W_regularizer=l2(L2_REGULARIZATION)))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))

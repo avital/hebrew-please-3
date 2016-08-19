@@ -35,7 +35,7 @@ def main():
                     samples_dir = samples_dir + '-avital'
                 sample = random.choice(samples[samples_dir])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
-                image_matrix = ndimage.imread(spectrogram_file, flatten=True)
+                image_matrix = ndimage.imread(spectrogram_file, flatten=True)[-129:, :]
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
                 batch_data.append(image_tensor)
                 batch_labels.append(label)
@@ -54,13 +54,13 @@ def main():
                 samples_dir = '../data/nn/v0/2nd-val/{0}'.format('english' if label else 'hebrew')
                 sample = random.choice(samples[samples_dir])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
-                image_matrix = ndimage.imread(spectrogram_file, flatten=True)
+                image_matrix = ndimage.imread(spectrogram_file, flatten=True)[-129:, :]
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
                 batch_data.append(image_tensor)
                 batch_labels.append(label)
             yield (numpy.stack(batch_data), batch_labels)
 
-    model.load_weights('weights.hdf5')
+#    model.load_weights('weights.hdf5')
 
     model.fit_generator(
         data_generator(),
@@ -70,7 +70,7 @@ def main():
         nb_val_samples=nb_val_samples,
         callbacks=[
             ModelCheckpoint("weights.hdf5"),
-            TensorBoard(log_dir='/mnt/nfs/X1-noise-2.0+l2-0.01',
+            TensorBoard(log_dir='/mnt/nfs/X1-halffreq-noise-2.0+l2-0.01',
                         histogram_freq=20,
                         write_graph=True)
         ]
