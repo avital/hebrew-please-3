@@ -60,7 +60,7 @@ def main():
                 batch_labels.append(label)
             yield (numpy.stack(batch_data), batch_labels)
 
-#    model.load_weights('weights.hdf5')
+    model.load_weights('weights.hdf5')
 
     model.fit_generator(
         data_generator(),
@@ -70,7 +70,7 @@ def main():
         nb_val_samples=nb_val_samples,
         callbacks=[
             ModelCheckpoint("weights.hdf5"),
-            TensorBoard(log_dir='/mnt/nfs/X4',
+            TensorBoard(log_dir='/mnt/nfs/X4-Adadelta',
                         histogram_freq=20,
                         write_graph=True)
         ]

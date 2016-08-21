@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.optimizers import Adam
+from keras.optimizers import Adam, Adadelta
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, AveragePooling2D
 from keras.layers.advanced_activations import LeakyReLU
@@ -79,7 +79,7 @@ def make_model():
     model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(Activation('sigmoid'))
 
-    model.compile(optimizer=Adam(),
+    model.compile(optimizer=Adadelta(),
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
