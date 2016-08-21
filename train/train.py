@@ -22,6 +22,11 @@ def main():
     json_string = model.to_json()
     open('architecture.json', 'w').write(json_string)
 
+    def onehot_vector(label):
+        vec = numpy.array([0, 0])
+        vec[label] = 1
+        return vec
+
     def data_generator():
         batch_size = 16
         while True:
@@ -30,16 +35,14 @@ def main():
             batch_labels = []
             for i in xrange(batch_size):
                 label = random.choice([0, 1])
-                samples_dir = '../data/nn/v0/train/{0}'.format('english' if label else 'hebrew')
-                if random.choice([1]):
-                    samples_dir = samples_dir + '-avital'
+                samples_dir = '../data/nn/v0/train/{0}'.format('english-avital' if label else 'hebrew-avital')
                 sample = random.choice(samples[samples_dir])
                 spectrogram_file = '{0}/{1}'.format(samples_dir, sample)
                 image_matrix = ndimage.imread(spectrogram_file, flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
                 batch_data.append(image_tensor)
-                batch_labels.append(label)
-            yield (numpy.stack(batch_data), batch_labels)
+                batch_labels.append(onehot_vector(label))
+            yield (numpy.stack(batch_data), numpy.stack(batch_labels))
 
     def val_data_generator():
         batch_size = 16
@@ -57,8 +60,8 @@ def main():
                 image_matrix = ndimage.imread(spectrogram_file, flatten=True)
                 image_tensor = numpy.expand_dims(image_matrix, axis=0)
                 batch_data.append(image_tensor)
-                batch_labels.append(label)
-            yield (numpy.stack(batch_data), batch_labels)
+                batch_labels.append(onehot_vector(label))
+            yield (numpy.stack(batch_data), numpy.stack(batch_labels))
 
 #    model.load_weights('weights.hdf5')
 
@@ -70,7 +73,7 @@ def main():
         nb_val_samples=nb_val_samples,
         callbacks=[
             ModelCheckpoint("weights.hdf5"),
-            TensorBoard(log_dir='/mnt/nfs/X4',
+            TensorBoard(log_dir='/mnt/nfs/X5softmax',
                         histogram_freq=20,
                         write_graph=True)
         ]

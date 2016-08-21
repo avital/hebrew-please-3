@@ -76,11 +76,11 @@ def make_model():
     model.add(Dropout(FC_DROPOUT))
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Dense(1, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(Activation('sigmoid'))
+    model.add(Dense(2, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(Activation('softmax'))
 
     model.compile(optimizer=Adam(),
-                  loss='binary_crossentropy',
+                  loss='categorical_crossentropy',
                   metrics=['accuracy'])
 
     return model
