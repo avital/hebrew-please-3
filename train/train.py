@@ -65,7 +65,7 @@ def main():
     model.fit_generator(
         data_generator(),
         samples_per_epoch=2048,
-        nb_epoch=300,
+        nb_epoch=3000,
         validation_data=val_data_generator(),
         nb_val_samples=nb_val_samples,
         callbacks=[
