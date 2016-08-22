@@ -1,5 +1,4 @@
 from keras.models import Sequential
-from keras.optimizers import Adam
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, AveragePooling2D
 from keras.layers.advanced_activations import LeakyReLU
@@ -8,7 +7,7 @@ from keras.layers.advanced_activations import ELU
 from keras.layers.normalization import BatchNormalization
 from keras.layers.noise import GaussianNoise
 
-def make_model():
+def make_model(optimizer):
     model = Sequential()
 
     L2_REGULARIZATION = 0.01
@@ -79,7 +78,7 @@ def make_model():
     model.add(Dense(2, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(Activation('softmax'))
 
-    model.compile(optimizer=Adam(),
+    model.compile(optimizer=optimizer,
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
 

@@ -8,6 +8,7 @@ import socket
 import time
 
 from keras.callbacks import ProgbarLogger, ModelCheckpoint, EarlyStopping, TensorBoard
+from keras.optimizers import Adam, Adadelta
 
 import os
 
@@ -18,9 +19,7 @@ samples = {
 
 def main():
     nb_val_samples = 512
-    model = make_model()
-    json_string = model.to_json()
-    open('architecture.json', 'w').write(json_string)
+    model_name = 'X7'
 
     def onehot_vector(label):
         vec = numpy.array([0, 0])
@@ -65,21 +64,33 @@ def main():
 
 #    model.load_weights('weights.hdf5')
 
-    model.fit_generator(
-        data_generator(),
-        samples_per_epoch=2048,
-        nb_epoch=3000,
-        validation_data=val_data_generator(),
-        nb_val_samples=nb_val_samples,
-        callbacks=[
-            ModelCheckpoint("weights.hdf5"),
-            TensorBoard(log_dir='/mnt/nfs/X5softmax',
-                        histogram_freq=20,
-                        write_graph=True)
-        ]
+    def fit_model(model, tensorboard_log_run, patience):
+        model.fit_generator(
+            data_generator(),
+            samples_per_epoch=2048,
+            nb_epoch=3000,
+            validation_data=val_data_generator(),
+            nb_val_samples=nb_val_samples,
+            callbacks=[
+                EarlyStopping(monitor='loss', patience=patience),
+                ModelCheckpoint("weights.hdf5"),
+                TensorBoard(log_dir='/mnt/nfs/{0}'.format(tensorboard_log_run),
+                            histogram_freq=20,
+                            write_graph=True)
+            ]
     )
 
-    model.save_weights('weights.hdf5', overwrite=True)
+    print "Making model with Adam optimizer"
+    model = make_model(Adam())
+    json_string = model.to_json()
+    open('architecture.json', 'w').write(json_string)
+    fit_model(model, model_name, patience=6)
+
+    print "Making model with Adadelta optimizer, starting where Adam training left off"
+    model = make_model(Adadelta())
+    model.load_weights('weights.hdf5')
+    fit_model(model, model_name, patience=40)
+
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
