@@ -36,46 +36,34 @@ def make_model(optimizer):
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
-
-
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(AveragePooling2D(pool_size=(1, 2)))
+    model.add(BatchNormalization())
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
     model.add(AveragePooling2D(pool_size=(1, 2)))
+    model.add(BatchNormalization())
+    model.add(ELU())
 
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(AveragePooling2D(pool_size=(1, 2)))
-
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(AveragePooling2D(pool_size=(1, 2)))
-
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(AveragePooling2D(pool_size=(1, 38)))
 
     model.add(Flatten())
 
     model.add(Dropout(FC_DROPOUT))
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Dense(256, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(GaussianNoise(GAUSSIAN_NOISE/2))
+    model.add(Dense(256))
 
     model.add(BatchNormalization())
     model.add(ELU())
 
     model.add(Dropout(FC_DROPOUT))
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Dense(256, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(GaussianNoise(GAUSSIAN_NOISE/2))
+    model.add(Dense(256))
     model.add(BatchNormalization())
     model.add(ELU())
 
     model.add(Dropout(FC_DROPOUT))
-
-    model.add(GaussianNoise(GAUSSIAN_NOISE))
-    model.add(Dense(2, W_regularizer=l2(L2_REGULARIZATION)))
+    model.add(GaussianNoise(GAUSSIAN_NOISE/2))
+    model.add(Dense(2))
     model.add(Activation('softmax'))
 
     model.compile(optimizer=optimizer,

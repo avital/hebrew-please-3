@@ -19,7 +19,7 @@ samples = {
 
 def main():
     nb_val_samples = 512
-    model_name = 'X7'
+    model_name = 'X8'
 
     def onehot_vector(label):
         vec = numpy.array([0, 0])
