@@ -35,16 +35,16 @@ def make_model(optimizer):
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(AveragePooling2D(pool_size=(1, 2)))
+    model.add(MaxPooling2D(pool_size=(1, 2)))
     model.add(BatchNormalization())
 
     model.add(GaussianNoise(GAUSSIAN_NOISE))
     model.add(Convolution2D(256, 1, 3, W_regularizer=l2(L2_REGULARIZATION)))
-    model.add(AveragePooling2D(pool_size=(1, 2)))
+    model.add(MaxPooling2D(pool_size=(1, 2)))
     model.add(BatchNormalization())
     model.add(ELU())
 
-    model.add(AveragePooling2D(pool_size=(1, 38)))
+    model.add(MaxPooling2D(pool_size=(1, 38)))
 
     model.add(Flatten())
 
@@ -68,6 +68,6 @@ def make_model(optimizer):
 
     model.compile(optimizer=optimizer,
                   loss='categorical_crossentropy',
-                  metrics=['accuracy'])
+                  metrics=['binary_accuracy'])
 
     return model
